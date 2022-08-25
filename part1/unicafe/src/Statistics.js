@@ -1,29 +1,35 @@
 import React from "react";
-
-const Statistic = ({name, value}) => <p>{name} {value}</p>
-
-const sum=(values)=>values.reduce((a, b) => a + b, 0)
-
-const getAverage =(values=[])=> {
-    if (values.length === 0) return 0
-    return sum(values) / values.length
-}
-
-const getPercentage=(portion=[],all=[])=>all.length ? (sum(portion)/sum(all)) : 0
+import {sum, getAverage, getPercentage, getTotalScore, allTruthy, atLeaseOneTrue} from "./utilityFunctions.mjs";
 
 
-const Statistics =({good,neutral,bad})=>{
-    const average = getAverage([good,neutral,bad])
-    const percentagePositive = getPercentage([good,neutral],[good,neutral,bad])
+export const StatisticLine = ({text, value}) => (
+    <tr>
+        <td>{text}</td>
+        <td>{value}</td>
+    </tr>
+)
+
+const Statistics = ({good, neutral, bad}) => {
+    const feedbackCount = sum([good, neutral, bad])
+    const averageScore = getAverage(getTotalScore({good, neutral, bad}), feedbackCount)
+    const percentagePositive = (getPercentage([good], [good, neutral, bad]) + '%'
+        || 'no feedback to calculate a % with yet')
 
     return (
-        <>
-            <Statistic name={'good'} value={good}/>
-            <Statistic name={'neutral'} value={neutral}/>
-            <Statistic name={'bad'} value={bad}/>
-            <Statistic name={'average'} value={average}/>
-            <Statistic name={'positive'} value={percentagePositive}/>
-        </>
+        atLeaseOneTrue([good, neutral, bad])
+            ?
+            <table>
+                <tbody>
+                <StatisticLine text={'good'} value={good}/>
+                <StatisticLine text={'neutral'} value={neutral}/>
+                <StatisticLine text={'bad'} value={bad}/>
+                <StatisticLine text={'all'} value={sum([good, neutral, bad])}/>
+                <StatisticLine text={'average'} value={averageScore}/>
+                <StatisticLine text={'positive'} value={percentagePositive}/>
+                </tbody>
+            </table>
+            :
+            null
     )
 }
 

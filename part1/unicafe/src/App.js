@@ -4,6 +4,8 @@ import Statistics from "./Statistics";
 
 
 
+
+
 const App = () => {
     const [good, setGood] = React.useState(0)
     const [neutral, setNeutral] = React.useState(0)
