@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseUrl =
-  "https://gregorian-fullstack-ex-part3.herokuapp.com/api/persons";
+  "/api/persons";
 
 const getAll = () => axios.get(baseUrl).then((res) => res.data);
 
