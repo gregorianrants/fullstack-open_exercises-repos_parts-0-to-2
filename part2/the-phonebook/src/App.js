@@ -108,10 +108,7 @@ const App = () => {
       })
       .catch((err) => {
         console.error(err);
-        flashNotification(
-          `error deleting ${name} it may have already beed deleted`,
-          "error"
-        );
+        handleApiError(err);
       });
   };
 
